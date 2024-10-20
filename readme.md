@@ -1,6 +1,6 @@
 # C Programs
 
-Welcome to the C Programs repository! This collection includes various algorithms implemented in C, covering topics such as sorting, searching, linked lists, queues, stacks, and more.
+Welcome to the C Programs repository! This collection includes various algorithms implemented in C.
 
 ## Table of Contents
 
@@ -29,15 +29,13 @@ This section includes implementations of various searching algorithms such as:
 
 This section includes implementations of various linked list operations such as:
 - Singly Linked List
-- Doubly Linked List
-- Circular Linked List
 
 ## Queues
 
 This section includes implementations of various queue operations such as:
-- Simple Queue
 - Circular Queue
-- Priority Queue
+- Double Ended Queue
+- Queue using Linked List
 
 ## Stacks
 
@@ -47,6 +45,6 @@ This section includes implementations of various stack operations such as:
 
 ## About
 
-I am Betmen, and I have created this repository to help others learn and understand fundamental algorithms in C. Happy coding!
+I am Betmen, and I have created this repository to help others learn and understand fundamental algorithms in C. Habby coding!
 
 ![Betmen GIF](https://media1.tenor.com/m/oFsEtUUE0_MAAAAC/cat-cute-cat.gif)
