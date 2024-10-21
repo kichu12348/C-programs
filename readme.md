@@ -45,6 +45,6 @@ This section includes implementations of various stack operations such as:
 
 ## About
 
-I am Betmen, and I have created this repository to help others learn and understand fundamental algorithms in C. Habby coding!
+I am Betmen, and I have created this repository to help others learn and understand fundamental algorithms in C 🙃. Habby coding!
 
 ![Betmen GIF](https://media1.tenor.com/m/oFsEtUUE0_MAAAAC/cat-cute-cat.gif)
