@@ -1,119 +1,176 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Define the structure of a node in the circular linked list
-struct Node {
+typedef struct Node {
     int data;
     struct Node* next;
-};
+    struct Node* prev;
+} Node;
+
+Node* head = NULL;
 
 // Function to create a new node
-struct Node* createNode(int data) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
     newNode->data = data;
-    newNode->next = newNode; // Initialize next to itself for a single node circular list
+    newNode->next = newNode->prev = newNode;
     return newNode;
 }
 
-// Function to insert a node at the beginning of the circular linked list
-void insertAtBeginning(struct Node** head, int data) {
-    struct Node* newNode = createNode(data);
-
-    if (*head == NULL) {  // If list is empty
-        *head = newNode;
+// Insert at the end
+void insertEnd(int data) {
+    Node* newNode = createNode(data);
+    if (head == NULL) {
+        head = newNode;
     } else {
-        struct Node* temp = *head;
-        while (temp->next != *head) { // Traverse to the last node
-            temp = temp->next;
-        }
-        temp->next = newNode;
-        newNode->next = *head;
-        *head = newNode; // Move head to the new node
+        Node* last = head->prev;
+        newNode->next = head;
+        head->prev = newNode;
+        newNode->prev = last;
+        last->next = newNode;
     }
 }
 
-// Function to insert a node after a given node
-void insertAfterNode(struct Node* prevNode, int data) {
-    if (prevNode == NULL) {
-        printf("The given previous node cannot be NULL.\n");
-        return;
-    }
+// Insert after a given node
+void insertAfterNode(int afterData, int data) {
+    Node* current = head;
+    if (head == NULL) return;
 
-    struct Node* newNode = createNode(data);
-    newNode->next = prevNode->next;
-    prevNode->next = newNode;
+    do {
+        if (current->data == afterData) {
+            Node* newNode = createNode(data);
+            newNode->next = current->next;
+            newNode->prev = current;
+            current->next->prev = newNode;
+            current->next = newNode;
+            return;
+        }
+        current = current->next;
+    } while (current != head);
+
+    printf("Node with data %d not found.\n", afterData);
 }
 
-// Function to insert a node before a given node
-void insertBeforeNode(struct Node** head, struct Node* nextNode, int data) {
-    if (*head == NULL || nextNode == NULL) {
-        printf("The given node cannot be NULL.\n");
-        return;
-    }
+// Insert before a given node
+void insertBeforeNode(int beforeData, int data) {
+    Node* current = head;
+    if (head == NULL) return;
 
-    struct Node* newNode = createNode(data);
+    do {
+        if (current->data == beforeData) {
+            Node* newNode = createNode(data);
+            newNode->next = current;
+            newNode->prev = current->prev;
+            current->prev->next = newNode;
+            current->prev = newNode;
 
-    // If nextNode is the head node, insert at beginning
-    if (*head == nextNode) {
-        struct Node* temp = *head;
-        while (temp->next != *head) {
-            temp = temp->next;
+            if (current == head) {
+                head = newNode;  // Update head if we insert before the first node
+            }
+            return;
         }
-        temp->next = newNode;
-        newNode->next = *head;
-        *head = newNode;
-    } else {
-        // Find the node before the nextNode
-        struct Node* temp = *head;
-        while (temp->next != nextNode && temp->next != *head) {
-            temp = temp->next;
-        }
+        current = current->next;
+    } while (current != head);
 
-        if (temp->next == nextNode) { // Insert before nextNode
-            temp->next = newNode;
-            newNode->next = nextNode;
-        } else {
-            printf("Node not found in the list.\n");
-        }
-    }
+    printf("Node with data %d not found.\n", beforeData);
 }
 
-// Function to display the circular linked list
-void displayList(struct Node* head) {
+// Delete a node with given data
+void deleteNode(int data) {
     if (head == NULL) {
         printf("List is empty.\n");
         return;
     }
 
-    struct Node* temp = head;
+    Node* current = head;
     do {
-        printf("%d ", temp->data);
-        temp = temp->next;
-    } while (temp != head);
+        if (current->data == data) {
+            if (current->next == current && current->prev == current) { // Single node case
+                free(current);
+                head = NULL;
+                return;
+            }
+
+            current->prev->next = current->next;
+            current->next->prev = current->prev;
+
+            if (current == head) { // If head is to be deleted
+                head = current->next;
+            }
+
+            free(current);
+            printf("Node with data %d deleted.\n", data);
+            return;
+        }
+        current = current->next;
+    } while (current != head);
+
+    printf("Node with data %d not found.\n", data);
+}
+
+// Display the list
+void displayList() {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+    Node* current = head;
+    do {
+        printf("%d ", current->data);
+        current = current->next;
+    } while (current != head);
     printf("\n");
 }
 
-// Main function
 int main() {
-    struct Node* head = NULL;
+    int choice, data, refData;
 
-    // Insert nodes at the beginning
-    insertAtBeginning(&head, 10);
-    insertAtBeginning(&head, 20);
-    insertAtBeginning(&head, 30);
+    while (1) {
+        printf("\n1. Insert at end\n2. Insert after node\n3. Insert before node\n4. Delete node\n5. Display list\n6. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
 
-    printf("Circular Linked List after inserting nodes at the beginning:\n");
-    displayList(head);
+        switch (choice) {
+            case 1:
+                printf("Enter data to insert at end: ");
+                scanf("%d", &data);
+                insertEnd(data);
+                break;
 
-    // Insert after a given node
-    printf("Inserting 25 after 20:\n");
-    insertAfterNode(head->next, 25); // Insert 25 after the node with value 20
-    displayList(head);
+            case 2:
+                printf("Enter reference data to insert after: ");
+                scanf("%d", &refData);
+                printf("Enter data to insert: ");
+                scanf("%d", &data);
+                insertAfterNode(refData, data);
+                break;
 
-    // Insert before a given node
-    printf("Inserting 15 before 10:\n");
-    insertBeforeNode(&head, head->next->next->next, 15); // Insert 15 before the node with value 10
-    displayList(head);
+            case 3:
+                printf("Enter reference data to insert before: ");
+                scanf("%d", &refData);
+                printf("Enter data to insert: ");
+                scanf("%d", &data);
+                insertBeforeNode(refData, data);
+                break;
+
+            case 4:
+                printf("Enter data to delete: ");
+                scanf("%d", &data);
+                deleteNode(data);
+                break;
+
+            case 5:
+                displayList();
+                break;
+
+            case 6:
+                printf("Exiting program.\n");
+                return 0;
+
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
 
     return 0;
 }
