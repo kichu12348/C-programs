@@ -9,7 +9,6 @@ typedef struct Node {
 
 Node* head = NULL;
 
-// Function to create a new node
 Node* createNode(int data) {
     Node* newNode = (Node*)malloc(sizeof(Node));
     newNode->data = data;
@@ -17,7 +16,24 @@ Node* createNode(int data) {
     return newNode;
 }
 
-// Insert at the end
+void insertAtStart(int data) {
+    Node* newNode = createNode(data);
+    if (head == NULL) {
+        head = newNode;
+    } else {
+        Node* last = head->prev;
+        newNode->next = head;
+        newNode->prev = last;
+        head->prev = newNode;
+        last->next = newNode;
+        head = newNode;
+    }
+}
+
+void insertAtRear(int data) {
+    insertEnd(data);
+}
+
 void insertEnd(int data) {
     Node* newNode = createNode(data);
     if (head == NULL) {
@@ -31,7 +47,6 @@ void insertEnd(int data) {
     }
 }
 
-// Insert after a given node
 void insertAfterNode(int afterData, int data) {
     Node* current = head;
     if (head == NULL) return;
@@ -51,7 +66,6 @@ void insertAfterNode(int afterData, int data) {
     printf("Node with data %d not found.\n", afterData);
 }
 
-// Insert before a given node
 void insertBeforeNode(int beforeData, int data) {
     Node* current = head;
     if (head == NULL) return;
@@ -65,7 +79,7 @@ void insertBeforeNode(int beforeData, int data) {
             current->prev = newNode;
 
             if (current == head) {
-                head = newNode;  // Update head if we insert before the first node
+                head = newNode;
             }
             return;
         }
@@ -75,7 +89,6 @@ void insertBeforeNode(int beforeData, int data) {
     printf("Node with data %d not found.\n", beforeData);
 }
 
-// Delete a node with given data
 void deleteNode(int data) {
     if (head == NULL) {
         printf("List is empty.\n");
@@ -85,7 +98,7 @@ void deleteNode(int data) {
     Node* current = head;
     do {
         if (current->data == data) {
-            if (current->next == current && current->prev == current) { // Single node case
+            if (current->next == current && current->prev == current) {
                 free(current);
                 head = NULL;
                 return;
@@ -94,7 +107,7 @@ void deleteNode(int data) {
             current->prev->next = current->next;
             current->next->prev = current->prev;
 
-            if (current == head) { // If head is to be deleted
+            if (current == head) {
                 head = current->next;
             }
 
@@ -108,7 +121,45 @@ void deleteNode(int data) {
     printf("Node with data %d not found.\n", data);
 }
 
-// Display the list
+void deleteFirst() {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+
+    Node* toDelete = head;
+    if (head->next == head) {
+        head = NULL;
+    } else {
+        Node* last = head->prev;
+        head = head->next;
+        head->prev = last;
+        last->next = head;
+    }
+
+    free(toDelete);
+    printf("First node deleted.\n");
+}
+
+void deleteEnd() {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+
+    Node* last = head->prev;
+    if (head->next == head) {
+        free(head);
+        head = NULL;
+    } else {
+        last->prev->next = head;
+        head->prev = last->prev;
+        free(last);
+    }
+
+    printf("Last node deleted.\n");
+}
+
 void displayList() {
     if (head == NULL) {
         printf("List is empty.\n");
@@ -126,18 +177,25 @@ int main() {
     int choice, data, refData;
 
     while (1) {
-        printf("\n1. Insert at end\n2. Insert after node\n3. Insert before node\n4. Delete node\n5. Display list\n6. Exit\n");
+        printf("\n1. Insert at start\n2. Insert at rear\n3. Insert after node\n4. Insert before node\n");
+        printf("5. Delete first\n6. Delete end\n7. Delete node by value\n8. Display list\n9. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
         switch (choice) {
             case 1:
-                printf("Enter data to insert at end: ");
+                printf("Enter data to insert at start: ");
                 scanf("%d", &data);
-                insertEnd(data);
+                insertAtStart(data);
                 break;
 
             case 2:
+                printf("Enter data to insert at rear: ");
+                scanf("%d", &data);
+                insertAtRear(data);
+                break;
+
+            case 3:
                 printf("Enter reference data to insert after: ");
                 scanf("%d", &refData);
                 printf("Enter data to insert: ");
@@ -145,7 +203,7 @@ int main() {
                 insertAfterNode(refData, data);
                 break;
 
-            case 3:
+            case 4:
                 printf("Enter reference data to insert before: ");
                 scanf("%d", &refData);
                 printf("Enter data to insert: ");
@@ -153,17 +211,25 @@ int main() {
                 insertBeforeNode(refData, data);
                 break;
 
-            case 4:
+            case 5:
+                deleteFirst();
+                break;
+
+            case 6:
+                deleteEnd();
+                break;
+
+            case 7:
                 printf("Enter data to delete: ");
                 scanf("%d", &data);
                 deleteNode(data);
                 break;
 
-            case 5:
+            case 8:
                 displayList();
                 break;
 
-            case 6:
+            case 9:
                 printf("Exiting program.\n");
                 return 0;
 
