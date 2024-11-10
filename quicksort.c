@@ -1,9 +1,9 @@
 #include<stdio.h>
 
-void swap(int *a, int *b){
-    int temp=*a;
-    *a=*b;
-    *b=temp;
+void swap(int *a,int *b){
+    int t = *a;
+    *a = *b;
+    *b = t;
 }
 
 int partition(int arr[],int low,int high){
@@ -36,3 +36,6 @@ void main(){
     }
     printf("\n");
 }
+
+//time complexity O(nlogn)
+//space complexity O(logn)

@@ -2,54 +2,65 @@
 #include <stdlib.h>
 
 // Define the structure of a node in the BST
-struct Node {
+typedef struct Node{
     int data;
     struct Node* left;
     struct Node* right;
-};
+}Node;
 
-// Function to create a new node
-struct Node* createNode(int data) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    newNode->data = data;
-    newNode->left = newNode->right = NULL;
-    return newNode;
+Node* createNode(int val){
+    Node* p=(Node *)malloc(sizeof(Node));
+    p->data=val;
+    p->left=p->right=NULL;
+    return p;
 }
 
-// Function to insert a new node in the BST
-struct Node* insert(struct Node* root, int data) {
-    if (root == NULL) {
-        return createNode(data);
-    }
-
-    if (data < root->data) {
-        root->left = insert(root->left, data);
-    } else if (data > root->data) {
-        root->right = insert(root->right, data);
-    }
-
+Node *insert(Node *root,int val){
+    if(!root) return createNode(val);
+    if(val<root->data) root->left=insert(root->left,val);
+    if(val>root->data) root->right=insert(root->right,val);
     return root;
 }
 
-// Function to search for a value in the BST
-struct Node* search(struct Node* root, int data) {
-    if (root == NULL || root->data == data) {
-        return root;
-    }
 
-    if (data < root->data) {
-        return search(root->left, data);
-    }
-
-    return search(root->right, data);
+Node *search(Node* root,int key){
+    if(!root) return NULL;
+    if(root->data<key) return search(root->right,key);
+    if(root->data>key) return search(root->left,key);
+    return root;
 }
 
-// Function for in-order traversal of the BST (Left, Root, Right)
-void inorderTraversal(struct Node* root) {
-    if (root != NULL) {
-        inorderTraversal(root->left);
-        printf("%d ", root->data);
-        inorderTraversal(root->right);
+void inorderTraversal(Node* root){
+    if(!root) return;
+    inorderTraversal(root->left);
+    printf("%d ",root->data);
+    inorderTraversal(root->right);
+}
+
+Node* findMin(Node* root){
+    while(root->left) root=root->left;
+    return root;
+}
+
+
+Node* delete(Node* root,int key){
+    if(!root) return NULL;
+    if(root->data<key) root->right=delete(root->right,key);
+    else if(root->data>key) root->left=delete(root->left,key);
+    else{
+        if(!root->left){
+            Node* temp=root->right;
+            free(root);
+            return temp;
+        }
+        else if(!root->right){
+            Node* temp=root->left;
+            free(root);
+            return temp;
+        }
+        Node* temp=findMin(root->right);
+        root->data=temp->data;
+        root->right=delete(root->right,temp->data);
     }
 }
 
@@ -82,3 +93,4 @@ int main() {
 
     return 0;
 }
+ 

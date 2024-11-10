@@ -1,202 +1,98 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-typedef struct node{
+
+// Define the structure of a node
+typedef struct Node{
     int data;
-    struct node *next;
-} Node;
+    struct Node *link;
+}Node;
 
 
-Node *head = NULL;         
-
-Node* createNode(int data){
+Node* newNode(int val){
     Node* p=(Node*)malloc(sizeof(Node));
-    p->data=data;
-    p->next=NULL;
+    p->data=val;
+    p->link=NULL;
     return p;
-};
+}
 
-void insertFront(int data){
-    Node* p=createNode(data);
-    if(head==NULL){
-        head=p;
-    }else{
-        p->next=head;
+Node* head;
+
+void insertNode(){
+    int n;
+    printf("enter value of n");
+    scanf("%d",&n);
+    Node* p=newNode(n);
+    if(!head)head=p;
+    else{
+        p->link=head;
         head=p;
     }
 }
 
 
-void insertRear(int data){
-    Node* p=createNode(data);
-    if(head==NULL){
-        head=p;
-    }else{
-        Node* q=head;
-        while(q->next!=NULL){
-            q=q->next;
-        }
-        q->next=p;
-    }
-}
+void deleteNode(){
+    int item;
+    printf("enter value of item to be deleted: ");
+    scanf("%d",&item);
 
-void deleteFront(){
-    if(head==NULL){
-        printf("List is empty\n");
-    }else{
-        Node* p=head;
-        head=head->next;
-        free(p);
-    }
-}
+    Node* curr = head;
+    Node *prev;
+    while(curr&&curr->data!=item) {
+        prev=curr;
+        curr=curr->link;
+        }
 
-void deleteRear(){
-    if(head==NULL){
-        printf("List is empty\n");
-    }else{
-        Node* p=head;
-        Node* q=NULL;
-        while(p->next!=NULL){
-            q=p;
-            p=p->next;
-        }
-        if(q==NULL){
-            head=NULL;
-        }else{
-            q->next=NULL;
-        }
-        free(p);
+    if(!curr){
+        printf("item not found\n");
+        return;
     }
+
+    if(curr==head){
+        head=head->link;
+        free(curr);
+        return;
+    }
+
+    prev->link=curr->link;
+    free(curr);
 }
 
 
 void display(){
-    Node* p=head;
-    while(p!=NULL){
-        printf("%d ",p->data);
-        p=p->next;
+    Node* curr=head;
+
+    while(curr){
+        printf("%d->",curr->data);
+        curr=curr->link;
     }
-    printf("\n");
+    printf("NULL\n");
 }
 
-void insertAfter(int data, int key){
-    Node* p=createNode(data);
-    Node* q=head;
-    while(q!=NULL && q->data!=key){
-        q=q->next;
-    }
-    if(q==NULL){
-        printf("Key not found\n");
-    }else{
-        p->next=q->next;
-        q->next=p;
-    }
-}
-
-void deleteKey(int key){
-    if(head==NULL){
-        printf("List is empty\n");
-    }else{
-        Node* p=head;
-        Node* q=NULL;
-        while(p!=NULL && p->data!=key){
-            q=p;
-            p=p->next;
-        }
-        if(p==NULL){
-            printf("Key not found\n");
-        }else{
-            if(q==NULL){
-                head=p->next;
-            }else{
-                q->next=p->next;
-            }
-            free(p);
-        }
-    }
-}
-
-void insertBefore(int data, int key){
-    Node* p=createNode(data);
-    Node* q=head;
-    Node* r=NULL;
-    while(q!=NULL && q->data!=key){
-        r=q;
-        q=q->next;
-    }
-    if(q==NULL){
-        printf("Key not found\n");
-    }else{
-        if(r==NULL){
-            p->next=head;
-            head=p;
-        }else{
-            p->next=q;
-            r->next=p;
-        }
-    }
-}
-
-void main(){
-    int choice, item, key;
-    while(1){
-        printf("1. Insert Front\n");
-        printf("2. Insert Rear\n");
-        printf("3. Delete Front\n");
-        printf("4. Delete Rear\n");
-        printf("5. Display\n");
-        printf("6. Insert After\n");
-        printf("7. Delete Key\n");
-        printf("8. Insert Before\n");
-        printf("9. Exit\n");
+void main() {
+    int choice;
+    while (1) {
+        printf("\nMenu:\n");
+        printf("1. Insert\n");
+        printf("2. Delete\n");
+        printf("3. Display\n");
+        printf("4. Exit\n");
         printf("Enter your choice: ");
-        scanf("%d",&choice);
-        switch(choice){
+        scanf("%d", &choice);
+        switch (choice) {
             case 1:
-                printf("Enter the element to insert: ");
-                scanf("%d",&item);
-                insertFront(item);
+                insertNode();
                 break;
             case 2:
-                printf("Enter the element to insert: ");
-                scanf("%d",&item);
-                insertRear(item);
+                deleteNode();
                 break;
             case 3:
-                deleteFront();
-                break;
-            case 4:
-                deleteRear();
-                break;
-            case 5:
                 display();
                 break;
-            case 6:
-                printf("Enter the element to insert: ");
-                scanf("%d",&item);
-                printf("Enter the key: ");
-                scanf("%d",&key);
-                insertAfter(item,key);
-                break;
-            case 7:
-                printf("Enter the key: ");
-                scanf("%d",&key);
-                deleteKey(key);
-                break;
-            case 8:
-                printf("Enter the element to insert: ");
-                scanf("%d",&item);
-                printf("Enter the key: ");
-                scanf("%d",&key);
-                insertBefore(item,key);
-                break;
-            case 9:
-                return;
+            case 4:
+                exit(0);
             default:
                 printf("Invalid choice\n");
         }
     }
 }
-
-
-

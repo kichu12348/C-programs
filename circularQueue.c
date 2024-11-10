@@ -8,8 +8,7 @@ int queue[MAX];
 int front = -1, rear = -1;
 
 int isFull(){
-    if(front == (rear+1)%MAX) return 1;
-    return 0;
+    return front == (rear+1)%MAX;
 }
 
 int isEmpty(){
