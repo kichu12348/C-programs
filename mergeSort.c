@@ -40,3 +40,28 @@ int main(){
 
 //O(nlogn) time complexity
 //O(n) space complexity
+
+//pseudo code
+
+/*
+merge(arr,left,mid,right):
+    1. i = left
+    2. j = mid+1
+    3. k = 0
+    4. temp[right-left+1]
+    5. while i<=mid && j<=right:
+        5.1 if arr[j]<arr[i] then temp[k++] = arr[j++]
+        5.2 else temp[k++] = arr[i++]
+    6. while i<=mid then temp[k++] = arr[i++]
+    7. while j<=right then temp[k++] = arr[j++]
+    8. for i=left and k=0 then i<=right then i++ and k++:
+        8.1 arr[i] = temp[k]
+
+
+mergeSort(arr,left,right):
+    1. if left<right:
+        1.1 mid = (left + right)/2
+        1.2 mergeSort(arr,left,mid)
+        1.3 mergeSort(arr,mid+1,right)
+        1.4 merge(arr,left,mid,right)
+*/

@@ -59,3 +59,29 @@ int main() {
 
     return 0;
 }
+
+
+//pseudo code
+/*
+heapify(arr,i,n):
+    largest = i
+    l = 2*i + 1
+    r = 2*i + 2
+
+    if l < n and arr[l] > arr[largest]
+        largest = l
+    if r < n and arr[r] > arr[largest]
+        largest = r
+
+    if largest != i
+        swap arr[i] and arr[largest]
+        heapify(arr, largest, n)
+
+heapSort(arr, n):
+    for i = n/2 - 1 to 0
+        heapify(arr, i, n)
+
+    for i = n-1 to 1
+        swap arr[0] and arr[i]
+        heapify(arr, 0, i)
+*/

@@ -24,11 +24,6 @@ int isOperator(char symbol){ // Check if the character is an operator
     return (symbol == '^' || symbol == '*' || symbol == '/' || symbol == '+' || symbol == '-');
 }
 
-
-int isOperand(char s){ // Check if the character is an operand
-    return ((s>= 'a' && s<= 'z') || (s>= 'A' && s<= 'Z')||(s>= '0' && s<= '9'));
-}
-
 int precedence(char symbol){ // Return the priority of the operator
     if(symbol == '^') return 3;
     if(symbol == '*' || symbol == '/') return 2;
@@ -42,9 +37,7 @@ void infixToPostfix(char infix[]){
     while(infix[i]!='\0'){
         char token = infix[i];
        
-        if(isOperand(token)) postfix[j++]=token; // If the token is an operand, add it to the postfix expression
-        
-        else if(token=='(')push(token); // If the token is an opening bracket, push it to the stack
+        if(token=='(') push(token); // If the token is an opening bracket, push it to the stack
         
         else if(token==')'){ // If the token is a closing bracket, pop all the operators from the stack and add them to the postfix expression until an opening bracket is encountered
             while(top!=-1 && peek()!='(') postfix[j++]=pop(); // Pop all the operators from the stack and add them to the postfix expression until an opening bracket is encountered
@@ -54,8 +47,13 @@ void infixToPostfix(char infix[]){
         else if(isOperator(token)){ // If the token is an operator
             while(top!=-1 && precedence(peek())>=precedence(token)) postfix[j++]=pop(); // Pop all the operators from the stack and add them to the postfix expression until an operator with lower precedence is encountered
             
-            push(token);// Push the token to the stack
+            push(token); // Push the token to the stack
         }
+        
+        else { // If the token is an operand, add it to the postfix expression
+            postfix[j++]=token;
+        }
+        
         i++; // Move to the next token
     }
 
@@ -65,7 +63,6 @@ void infixToPostfix(char infix[]){
     
     printf("Postfix expression is: %s\n", postfix);
 }
-
 
 void main(){
     char infix[SIZE];

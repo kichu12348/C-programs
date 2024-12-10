@@ -240,3 +240,148 @@ int main() {
 
     return 0;
 }
+
+
+//algorithm
+
+/*
+createNode(data):
+    newNode = new Node
+    newNode.data = data
+    newNode.next = newNode.prev = newNode
+    return newNode
+
+insertAtStart(data):
+    newNode = createNode(data)
+    if head == NULL
+        head = newNode
+    else
+        last = head.prev
+        newNode.next = head
+        newNode.prev = last
+        head.prev = newNode
+        last.next = newNode
+        head = newNode
+
+
+insertEnd(data):
+    newNode = createNode(data)
+    if head == NULL
+        head = newNode
+    else
+        last = head.prev
+        newNode.next = head
+        head.prev = newNode
+        newNode.prev = last
+        last.next = newNode
+
+insertAfterNode(afterData, data):
+    current = head
+    if head == NULL
+        return
+
+    do
+        if current.data == afterData
+            newNode = createNode(data)
+            newNode.next = current.next
+            newNode.prev = current
+            current.next.prev = newNode
+            current.next = newNode
+            return
+        current = current.next
+    while current != head
+
+    print "Node with data afterData not found."
+
+insertBeforeNode(beforeData, data):
+    current = head
+    if head == NULL
+        return
+
+    do
+        if current.data == beforeData
+            newNode = createNode(data)
+            newNode.next = current
+            newNode.prev = current.prev
+            current.prev.next = newNode
+            current.prev = newNode
+
+            if current == head
+                head = newNode
+            return
+        current = current.next
+    while current != head
+
+    print "Node with data beforeData not found."
+
+deleteNode(data):
+    if head == NULL
+        print "List is empty."
+        return
+
+    current = head
+    do
+        if current.data == data
+            if current.next == current and current.prev == current
+                free current
+                head = NULL
+                return
+
+            current.prev.next = current.next
+            current.next.prev = current.prev
+
+            if current == head
+                head = current.next
+
+            free current
+            print "Node with data data deleted."
+            return
+        current = current.next
+    while current != head
+
+    print "Node with data data not found."
+
+deleteFirst():
+    if head == NULL
+        print "List is empty."
+        return
+
+    toDelete = head
+    if head.next == head
+        head = NULL
+    else
+        last = head.prev
+        head = head.next
+        head.prev = last
+        last.next = head
+
+    free toDelete
+    print "First node deleted."
+
+deleteEnd():
+    if head == NULL
+        print "List is empty."
+        return
+
+    last = head.prev
+    if head.next == head
+        free head
+        head = NULL
+    else
+        last.prev.next = head
+        head.prev = last.prev
+        free last
+
+    print "Last node deleted."
+
+displayList():
+    if head == NULL
+        print "List is empty."
+        return
+    current = head
+    do
+        print current.data
+        current = current.next
+    while current != head
+    print
+*/

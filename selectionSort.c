@@ -24,3 +24,19 @@ int main(){
     }
     return 0;
 }
+
+// O(n^2) time complexity
+// O(1) space complexity
+
+//pseudo code
+
+/*
+selectionSort(arr):
+    1. for i=0 and i<n then i++:
+        1.1 minIdx = i
+        1.2 for j=i+1 and j<n then j++:
+            1.2.1 if arr[j]<arr[minIdx] then minIdx = j
+        1.3 temp = arr[i]
+        1.4 arr[i] = arr[minIdx]
+        1.5 arr[minIdx] = temp
+*/

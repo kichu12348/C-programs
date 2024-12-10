@@ -32,3 +32,17 @@ int main()
 
 // O(n^2) time complexity
 // O(1) space complexity
+
+//pseudo code
+
+/*
+insertionSort(arr):
+    1. for i = 1 and i<n then i++ :
+        1.1 piv = arr[i]
+        1.2 j = i - 1
+        1.3 while j >= 0 && arr[j] > piv:
+            1.3.1 arr[j + 1] = arr[j]
+            1.3.2 j--
+        1.4 arr[j + 1] = piv
+
+*/

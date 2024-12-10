@@ -155,5 +155,72 @@ void main() {
     }
 }
 
+// Time complexity
+// insertFront: O(1)
+// insertRear: O(1)
 
+// deleteFront: O(1)
+
+// deleteRear: O(1)
+
+//pseudo code
+
+/*
+MAX=5
+front=-1
+rear=-1
+queue[MAX]
+
+
+isFull():
+    1. if front == (rear+1)%MAX then return 1
+    2. return 0
+
+isEmpty():
+    1. if front == -1 then return 1
+    2. return 0
+
+insertFront(item):
+    1. if isFull() then print "Queue Overflow" and return
+    2. if front == -1 then front = rear = 0
+    3. else if front == 0 then front = MAX - 1
+    4. else front = front - 1
+    5. queue[front] = item
+
+insertRear(item):
+    1. if isFull() then print "Queue Overflow" and return
+    2. if front == -1 then front = rear = 0
+    3. else if rear == MAX - 1 then rear = 0
+    4. else rear = rear + 1
+    5. queue[rear] = item
+
+deleteFront():
+    1. if isEmpty() then print "Queue Underflow" and return
+    2. item = queue[front]
+    3. if front == rear then front = rear = -1
+    4. else if front == MAX - 1 then front = 0
+    5. else front = front + 1
+    6. print "Deleted element is: " + item
+
+deleteRear():
+    1. if isEmpty() then print "Queue Underflow" and return
+    2. item = queue[rear]
+    3. if front == rear then front = rear = -1
+    4. else if rear == 0 then rear = MAX - 1
+    5. else rear = rear - 1
+    6. print "Deleted element is: " + item
+
+display():
+    1. if isEmpty() then print "Queue is empty" and return
+    2. if front <= rear then:
+        2.1 for i=front and i<=rear then i++:
+            2.1.1 print queue[i]
+    3. else:
+        3.1 for i=front and i<MAX then i++:
+            3.1.1 print queue[i]
+        3.2 for i=0 and i<=rear then i++:
+            3.2.1 print queue[i]
+    4. print "\n"
+
+*/
 
